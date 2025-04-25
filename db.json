@@ -1,0 +1,44 @@
+{
+  "listTitles": [
+    {
+      "title": "Make a todo list app",
+      "checked": true,
+      "id": "2858"
+    },
+    {
+      "title": "Predict the weather",
+      "checked": true,
+      "id": "cf14"
+    },
+    {
+      "id": "1745553622548",
+      "title": "Hola",
+      "checked": false
+    },
+    {
+      "id": "dd7f3175-855e-463e-9ebf-631a57b20eb2",
+      "title": "Jajaja",
+      "checked": false
+    },
+    {
+      "id": "0bd74465-d07e-4269-94ac-55cb4b4e669a",
+      "title": "hacer la tarea",
+      "checked": false
+    },
+    {
+      "id": "35e48173-f396-4daf-95be-7965a4cd4af7",
+      "title": "Hacer cosas",
+      "checked": false
+    },
+    {
+      "id": "e8067a4b-80ed-4986-b507-ffc847658396",
+      "title": "Ser cool",
+      "checked": false
+    },
+    {
+      "id": "c5d91760-6212-4263-b578-be8f85488bff",
+      "title": "ha",
+      "checked": false
+    }
+  ]
+}

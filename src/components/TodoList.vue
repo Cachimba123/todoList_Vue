@@ -1,13 +1,21 @@
 <script lang='ts' setup>
 
+import type { Item } from '@/interfaces/item'
 import ListItem from './ListItem.vue'
-import { ref, onMounted, computed, type Ref } from 'vue'
-type Item = {
+import { onMounted, computed } from 'vue'
+import { RouterLink } from 'vue-router'
+import { useTodoList } from '@/composables/useTodoList'
+
+/* type Item = {
   title: string,
   checked?: boolean
-}
+} */
 
-const storageItems: Ref<Item[]> = ref([])
+
+
+
+
+// const storageItems: Ref<Item[]> = ref([])
 
 /* const listItems: Ref<Item[]> = ref([
   { title: 'Make a todo list app', checked: true },
@@ -34,13 +42,15 @@ const storageItems: Ref<Item[]> = ref([])
       (itemInList: Item) => itemInList.title === item.title
       )
  } */
+// const sortedList = computed(() => [...listItems.value].sort((a, b) => (a.checked ? 1 : 0) - (b.checked ? 1 : 0)))
 
+/* 
 onMounted(() => {
   initListItems()
   storageItems.value = getFromStorage()
-})
+}) */
 
-const initListItems = (): void => {
+/* const initListItems = (): void => {
   if (storageItems.value?.length === 0) {
     const listItems = [
       { title: 'Make a todo list app', checked: true },
@@ -93,14 +103,63 @@ const getFromStorage = (): Item[] | [] => {
   return []
 
 }
+ */
+const { listItems,
+  addItem,
+  deleteItem,
+  updateItem,
+  lookTask,
+  deleteAllFinished,
+  generateId,
+  itemTitle
+} = useTodoList()
+
+const listItemsFind = computed(() => {
+  if (itemTitle.value) {
+    return listItems.value.filter((item: Item) => item.title.toLowerCase().includes(itemTitle.value.toLowerCase()))
+  } else {
+    return []
+  }
+})
+const sortedList = computed(() => [...listItems.value].sort((a, b) => (a.checked ? 1 : 0) - (b.checked ? 1 : 0)))
+
+onMounted(async () => {
+  try {
+    const res = await fetch("http://localhost:3000/listTitles")
+    listItems.value = await res.json()
+  } catch (error) {
+    console.error('Error fetching data:', error)
+  }
+})
 
 
 </script>
 
 <template>
-  <ul>
+  <div>
+    <label>Buscar Tarea</label>
+    <input type="text" v-model="itemTitle" placeholder="Buscar tarea" />
+    <button @click="deleteAllFinished">Eliminar tareas terminadas</button>
+    <button @click="addItem({ title: itemTitle, checked: false, id: generateId() })">Agregar tarea</button>
+    <div v-if="listItemsFind.length > 0">
+      <ul>
+        <li :key='key' v-for="item, key in listItemsFind">
+          <ListItem :is-checked='item.checked' @click.prevent="updateItem(item)">{{ item.title }}</ListItem>
+          <button @click="lookTask(item.id)">Ver tarea</button>
+          <button @click="deleteItem(item.id)">Eliminar tarea</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div v-if="listItems.length == 0">
+    <h2>Todo List</h2>
+  </div>
+  <ul v-else>
     <li :key='key' v-for='(item, key) in sortedList'>
-      <ListItem :is-checked='item.checked' v-on:click.prevent="updateItem(item)">{{ item.title }}</ListItem>
+      <ListItem :is-checked='item.checked' @click.prevent="updateItem(item)">{{ item.title }}</ListItem>
+      <RouterLink :to="{ name: 'item', params: { id: item.id } }">Ver tarea</RouterLink>
+      <button @click="deleteItem(item.id)">Eliminar tarea</button>
     </li>
   </ul>
 </template>

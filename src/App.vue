@@ -1,12 +1,12 @@
 <script setup lang="ts">
- import AppHeader from './components/AppHeader.vue';
- import TodoList from './components/TodoList.vue';
+import AppHeader from './components/AppHeader.vue';
 </script>
 
 <template>
-  
- <AppHeader />
- <TodoList />
+
+  <AppHeader />
+  <br />
+  <RouterView />
 
 </template>
 
