@@ -108,10 +108,10 @@ const { listItems,
   addItem,
   deleteItem,
   updateItem,
-  lookTask,
   deleteAllFinished,
   generateId,
-  itemTitle
+  itemTitle,
+  getTodoList
 } = useTodoList()
 
 const listItemsFind = computed(() => {
@@ -124,13 +124,10 @@ const listItemsFind = computed(() => {
 const sortedList = computed(() => [...listItems.value].sort((a, b) => (a.checked ? 1 : 0) - (b.checked ? 1 : 0)))
 
 onMounted(async () => {
-  try {
-    const res = await fetch("http://localhost:3000/listTitles")
-    listItems.value = await res.json()
-  } catch (error) {
-    console.error('Error fetching data:', error)
-  }
+  await getTodoList()
 })
+
+
 
 
 </script>
@@ -145,7 +142,7 @@ onMounted(async () => {
       <ul>
         <li :key='key' v-for="item, key in listItemsFind">
           <ListItem :is-checked='item.checked' @click.prevent="updateItem(item)">{{ item.title }}</ListItem>
-          <button @click="lookTask(item.id)">Ver tarea</button>
+          <RouterLink :to="{ name: 'item', params: { id: item.id } }">Ver tarea</RouterLink>
           <button @click="deleteItem(item.id)">Eliminar tarea</button>
         </li>
       </ul>
@@ -157,7 +154,8 @@ onMounted(async () => {
   </div>
   <ul v-else>
     <li :key='key' v-for='(item, key) in sortedList'>
-      <ListItem :is-checked='item.checked' @click.prevent="updateItem(item)">{{ item.title }}</ListItem>
+      <ListItem :is-checked='item.checked' @click.prevent="item.checked = !item.checked; updateItem(item)">{{ item.title
+        }}</ListItem>
       <RouterLink :to="{ name: 'item', params: { id: item.id } }">Ver tarea</RouterLink>
       <button @click="deleteItem(item.id)">Eliminar tarea</button>
     </li>

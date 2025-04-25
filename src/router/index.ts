@@ -8,14 +8,12 @@ const router = createRouter({
       path: '/',
       name: 'homeList',
       component: TodoList,
-      children: [
-        {
-          path: '/item/:id',
-          name: 'item',
-          component: () => import('@/components/itemDetails.vue'),
-          props: true,
-        },
-      ],
+    },
+    {
+      path: '/item/:id',
+      name: 'item',
+      component: () => import('@/components/itemDetails.vue'),
+      props: true,
     },
   ],
 })

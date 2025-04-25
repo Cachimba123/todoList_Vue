@@ -1,31 +1,44 @@
-
 <template>
     <div class="item-details">
-        <h2>{{ item.title }}</h2>
-        <h2>Estado: {{item.checked?'Terminada':'Por terminar'}}</h2>
-        <button @click="$emit('updateItem', item)">
+        <input v-model="item.title" />
+        <h2>Estado: {{ item.checked ? 'Terminada' : 'Por terminar' }}</h2>
+        <button @click="item.checked = !item.checked">
             {{ item.checked ? 'Marcar como no terminada' : 'Marcar como terminada' }}
         </button>
-        <button @click="$emit('deleteItem', item.id)">Eliminar tarea</button>
+        <button @click="updateItem(item); $router.replace({ path: '/' })">Actualizar tarea</button>
+        <button @click="deleteItem(item.id); $router.replace({ path: '/' })">Eliminar tarea</button>
         <routerLink to="/">Close</routerLink>
     </div>
 </template>
 
 <script lang="ts" setup>
+import { useTodoList } from '@/composables/useTodoList';
+import type { Item } from '@/interfaces/item';
+import { onMounted, ref, watch } from 'vue';
 
-defineProps<{
-    item: {
-        id: number
-        title: string
-        checked: boolean
-    }
+
+const props = defineProps<{
+    id: string
 }>()
+
+const item = ref<Item>({
+    id: '',
+    title: '',
+    checked: false
+})
+onMounted(async () => {
+    item.value = await lookTask(props.id)
+})
+
+watch(() => props.id, async (newId) => {
+    item.value = await lookTask(newId)
+})
+
+const { lookTask, updateItem, deleteItem } = useTodoList()
 
 </script>
 
-<style scoped lang="scss">
-
-
+<style scoped lang="css">
 .item-details {
     display: flex;
     flex-direction: column;
@@ -66,5 +79,4 @@ button:focus {
     outline: none;
     box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
 }
-
 </style>

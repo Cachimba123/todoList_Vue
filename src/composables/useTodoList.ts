@@ -5,7 +5,6 @@ export const useTodoList = () => {
   const itemTitle = ref('')
   const listItems = ref<Item[]>([])
 
-  
   const findItemInList = (item: Item): Item | undefined => {
     return listItems.value.find((itemInList: Item) => itemInList.id === item.id)
   }
@@ -13,19 +12,26 @@ export const useTodoList = () => {
     item.checked = !item.checked
   }
 
+  const getTodoList = async () => {
+    try {
+      const res = await fetch('http://localhost:3000/listTitles')
+      listItems.value = await res.json()
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
+  }
+
   const updateItem = async (item: Item) => {
     try {
-      const updatedItem = findItemInList(item)
-      if (updatedItem) {
-        toggleItemChecked(updatedItem)
-        await fetch(`http://localhost:3000/listTitles/${item.id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(updatedItem),
-        })
-      }
+      /*       const updatedItem = findItemInList(item)
+      if (updatedItem) { */
+      await fetch(`http://localhost:3000/listTitles/${item.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(item),
+      })
     } catch (error) {
       console.error('Error al encontrar o modificar el item:', error)
     }
@@ -34,8 +40,7 @@ export const useTodoList = () => {
   const lookTask = async (id: string) => {
     try {
       const res = await fetch(`http://localhost:3000/listTitles/${id}`)
-      const task = await res.json()
-      console.log('Task details:', task)
+      return await res.json()
     } catch (error) {
       console.error('Error fetching data:', error)
     }
@@ -89,6 +94,7 @@ export const useTodoList = () => {
   const generateId = () => crypto.randomUUID()
 
   return {
+    getTodoList,
     listItems,
     addItem,
     deleteItem,
