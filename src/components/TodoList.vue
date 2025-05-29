@@ -155,7 +155,7 @@ onMounted(async () => {
   <ul v-else>
     <li :key='key' v-for='(item, key) in sortedList'>
       <ListItem :is-checked='item.checked' @click.prevent="item.checked = !item.checked; updateItem(item)">{{ item.title
-        }}</ListItem>
+      }}</ListItem>
       <RouterLink :to="{ name: 'item', params: { id: item.id } }">Ver tarea</RouterLink>
       <button @click="deleteItem(item.id)">Eliminar tarea</button>
     </li>

@@ -3,9 +3,10 @@ import AppHeader from './components/AppHeader.vue';
 </script>
 
 <template>
-
-  <AppHeader />
-  <br />
+  <header>
+    <AppHeader />
+  </header>
+  
   <RouterView />
 
 </template>

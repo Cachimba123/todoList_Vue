@@ -32,6 +32,8 @@ export const useTodoList = () => {
         },
         body: JSON.stringify(item),
       })
+      const index = listItems.value.findIndex((i) => i.id === item.id)
+      if (index !== -1) listItems.value[index] = { ...item }
     } catch (error) {
       console.error('Error al encontrar o modificar el item:', error)
     }

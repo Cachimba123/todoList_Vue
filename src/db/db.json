@@ -7,13 +7,8 @@
     },
     {
       "title": "Predict the fear",
-      "checked": true,
+      "checked": false,
       "id": "cf14"
-    },
-    {
-      "id": "dd7f3175-855e-463e-9ebf-631a57b20eb2",
-      "title": "Jajaja",
-      "checked": true
     },
     {
       "id": "0bd74465-d07e-4269-94ac-55cb4b4e669a",
@@ -23,6 +18,11 @@
     {
       "id": "35e48173-f396-4daf-95be-7965a4cd4af7",
       "title": "Hacer cosas",
+      "checked": true
+    },
+    {
+      "id": "df607f47-b059-4f43-b451-cda8b0e5d288",
+      "title": "Hola",
       "checked": true
     }
   ]
